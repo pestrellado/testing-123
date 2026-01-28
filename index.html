@@ -1,144 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Be My Valentine 💖</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Meow+Script&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Meow+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --soft-pink: ##fff0f3;
+            --dark-pink: #c9184a;
+        }
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #ffe6ea;
-      height: 100vh;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      position: relative;
-    }
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--soft-pink);
+            font-family: 'Meow Script', cursive;
+            overflow: hidden;
+            text-align: center;
+        }
 
-    h1 {
-      color: #d6336c;
-      margin-bottom: 30px;
-      z-index: 2;
-      text-align: center;
-      font-family: "Meow Script", cursive;
-    }
+        /* Music Overlay - Required for mobile browsers */
+        #music-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--primary-pink);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            cursor: pointer;
+        }
 
-    button {
-      font-size: 18px;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      position: relative;
-      z-index: 2;
-    }
+        .container {
+            padding: 20px;
+            z-index: 10;
+        }
 
-    #yesBtn {
-      background-color: #ff4d6d;
-      color: white;
-      margin-right: 10px;
-    }
+        h1 {
+            font-size: 3.5rem;
+            color: var(--dark-pink);
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+	.div-desc {
+	    font-family: "DynaPuff", system-ui;
+	    font-size: 1.8rem;
+	}
 
-    #noBtn {
-      background-color: #adb5bd;
-      color: white;
-      position: absolute;
-    }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
 
-    #buttons {
-      position: relative;
-      width: 300px;
-      height: 200px;
-      z-index: 2;
-    }
+        button {
+            font-family: "DynaPuff", system-ui;
+            font-size: 1.8rem;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
 
-    /* Floating Hearts */
-    .heart {
-      position: absolute;
-      bottom: -20px;
-      color: #ff4d6d;
-      font-size: 20px;
-      animation: floatUp 6s linear infinite;
-      opacity: 0.8;
-    }
+        #yes-btn {
+            background-color: var(--primary-pink);
+            color: white;
+        }
 
-    @keyframes floatUp {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 0.9;
-      }
-      100% {
-        transform: translateY(-110vh) scale(1.5);
-        opacity: 0;
-      }
-    }
-  </style>
+        #no-btn {
+            background-color: white;
+            color: var(--dark-pink);
+            position: relative;
+        }
+
+        /* Floating Hearts */
+        .heart {
+            position: absolute;
+            color: var(--primary-pink);
+            font-size: 20px;
+            user-select: none;
+            animation: float 5s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5rem; }
+            button { font-size: 1.5rem; padding: 10px 25px; }
+        }
+    </style>
 </head>
 <body>
 
-  <h1 id="question">Hi, Love<br>Will you be my Valentine? 💝</h1>
+    <div id="music-overlay" onclick="startExperience()">
+        <h1>Click to open your message ❤️</h1>
+    </div>
 
-  <div id="buttons">
-    <button id="yesBtn" onclick="yesClicked()">Super Yes 💖</button>
-    <button id="noBtn" onmouseover="moveNo()">No 🙃</button>
-  </div>
+    <div class="container" id="main-content">
+        <h1 id="question">Hi love,<br>please be my valentine</h1>
+        <div class="buttons" id="btn-group">
+            <button id="yes-btn" onclick="celebrate()">Super Yes</button>
+            <button id="no-btn" onmouseover="moveButton()" onclick="moveButton()">No</button>
+        </div>
+    </div>
 
-  <!-- Background Music -->
-  <audio id="bgMusic" loop>
-    <source src="music.mp3" type="audio/mpeg">
-  </audio>
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
 
-  <script>
-    const noBtn = document.getElementById("noBtn");
-    const music = document.getElementById("bgMusic");
+    <script>
+        let noCount = 0;
+        const messages = ["Are you sure?", "Pleease?", "Don't do this!", "Think again!", "You're breaking my heart :("];
 
-    // Start music on first interaction (mobile-friendly)
-    window.addEventListener("click", () => {
-      music.play().catch(() => {});
-    }, { once: true });
+        function startExperience() {
+            document.getElementById('music-overlay').style.display = 'none';
+            document.getElementById('bg-music').play();
+            createHearts();
+        }
 
-    function moveNo() {
-      const x = Math.random() * 220;
-      const y = Math.random() * 150;
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-    }
+        function moveButton() {
+            const noBtn = document.getElementById('no-btn');
+            const question = document.getElementById('question');
+            
+            // Change text if they try to click No
+            if (noCount < messages.length) {
+                question.innerText = messages[noCount];
+                noCount++;
+            }
 
-    function yesClicked() {
-      document.body.innerHTML = `
-        <h1>YAY!! 💕🥰</h1>
-        <p>You’re officially my Valentine 🌹</p>
-        <p>I can’t wait to spend this day with you ❤️</p>
-      `;
-      music.play();
-    }
+            // Move button to random position
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        }
 
-    // Floating hearts generator
-    function createHeart() {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.innerHTML = "💗";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.fontSize = (Math.random() * 20 + 15) + "px";
-      heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
+        function celebrate() {
+            const container = document.querySelector('.container');
+            container.innerHTML = `
+                <h1 style="font-size: 3rem;">Yayy!<br> <div class="div-desc">You're officially my valentine, can't wait to spend this day with you.<div></h1>
+                <div style="font-size: 5rem;">🥰❤️✨</div>
+            `;
+        }
 
-      document.body.appendChild(heart);
-
-      setTimeout(() => {
-        heart.remove();
-      }, 7000);
-    }
-
-    setInterval(createHeart, 400);
-  </script>
-
+        function createHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                document.body.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 5000);
+            }, 300);
+        }
+    </script>
 </body>
 </html>
-
-
